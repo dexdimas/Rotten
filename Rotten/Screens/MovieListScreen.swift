@@ -10,17 +10,32 @@ import SwiftUI
 struct MovieListScreen: View {
     
     @ObservedObject private var movieListVM: MovieListViewModel
+    @State private var movieName: String = ""
     
     init() {
         self.movieListVM = MovieListViewModel()
-        self.movieListVM.searchByName("power")
     }
     
     var body: some View {
         VStack {
-            MovieListView(movies: self.movieListVM.movies)
+            TextField("Search", text: $movieName) { (_) in } onCommit: {
+                self.movieListVM.searchByName(self.movieName)
+            }
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            Spacer()
                 .navigationTitle("Movies")
-        }.embedNavigationView()
+            
+            if self.movieListVM.loadingState == .success {
+                MovieListView(movies: self.movieListVM.movies)
+            } else if self.movieListVM.loadingState == .failed {
+                FailedView()
+            } else if self.movieListVM.loadingState == .loading {
+                LoadingView()
+            }
+            
+        }
+        .padding()
+        .embedNavigationView()
     }
 }
 
