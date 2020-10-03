@@ -11,7 +11,7 @@ import SwiftUI
 struct RottenApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MovieListScreen()
         }
     }
 }
