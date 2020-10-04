@@ -27,7 +27,8 @@ class HTTPClient: ObservableObject {
             guard let movieDetail = try? JSONDecoder().decode(MovieDetail.self, from: data) else { return completion(.failure(.decodingError)) }
             
             completion(.success(movieDetail))
-        }
+            
+        }.resume()
     }
     
     func getMoviesBy(search: String, completion: @escaping (Result<[Movie]?,NetworkError>) -> Void) {
